@@ -1,6 +1,7 @@
 package com.springboot.learning.kit.routes;
 
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,12 +61,12 @@ public class RabbitMQRoutes {
     }
 
     @Bean
-    public Binding mainBinding(Queue mainQueue, DirectExchange exchange) {
+    public Binding mainBinding(@Qualifier("mainQueue") Queue mainQueue, DirectExchange exchange) {
         return BindingBuilder.bind(mainQueue).to(exchange).with(orderPlacementQueue);
     }
 
     @Bean
-    public Binding dlqBinding(Queue deadLetterQueue, DirectExchange exchange) {
+    public Binding dlqBinding(@Qualifier("deadLetterQueue") Queue deadLetterQueue, DirectExchange exchange) {
         return BindingBuilder.bind(deadLetterQueue).to(exchange).with(orderPlacementQueueDlq);
     }
 
